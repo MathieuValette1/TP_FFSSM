@@ -16,6 +16,8 @@ public class Club {
     public String adresse;
 
     public String telephone;
+    
+    public Set<Plongee> plongees = new HashSet<>();
 
     public Club(Moniteur président, String nom, String telephone) {
         this.president = président;
@@ -30,8 +32,13 @@ public class Club {
      * @return l'ensemble des plongées non conformes
      */
     public Set<Plongee> plongeesNonConformes() {
-         // TODO: Implémenter cette méthode
-        throw new UnsupportedOperationException("Pas encore implémenté");
+        Set<Plongee> plongeeNonConforme = new HashSet<>();
+        for (Plongee p: plongees){
+            if (!p.estConforme()){
+                plongeeNonConforme.add(p);
+            }
+        }
+        return plongeeNonConforme;
     }
 
     /**
