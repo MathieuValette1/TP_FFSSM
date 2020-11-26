@@ -23,7 +23,9 @@ public class Embauche {
      * @param dateFin la date à laquelle cette embauche est terminée
      */
     public void terminer(LocalDate dateFin){ 
-        
+      if (this.estTerminee()) {
+          dateFin = LocalDate.now();
+      } 
     }
     
     /**

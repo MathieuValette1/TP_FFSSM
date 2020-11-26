@@ -47,6 +47,7 @@ public class Plongee {
 	 * @return vrai si la plongée est conforme
 	 */
 	public boolean estConforme() {
+            if (!participants.isEmpty()){
 		boolean conforme = true;
 		
                 Iterator<Plongeur> participantsIterator = participants.iterator();
@@ -57,6 +58,8 @@ public class Plongee {
                     }
                 }
                 return conforme;
+            }
+            return false;
 	}
 
 }

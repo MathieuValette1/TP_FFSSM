@@ -5,6 +5,7 @@ package FFSSM;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.List;
 
 public class Club {
 
@@ -18,6 +19,8 @@ public class Club {
     public String telephone;
     
     public Set<Plongee> plongees = new HashSet<>();
+    
+    public List<Embauche> embauches;
 
     public Club(Moniteur président, String nom, String telephone) {
         this.president = président;
@@ -46,8 +49,7 @@ public class Club {
      * @param p la nouvelle plongée
      */
     public void organisePlongee(Plongee p) {
-         // TODO: Implémenter cette méthode
-        throw new UnsupportedOperationException("Pas encore implémenté");
+        plongees.add(p);
     }
     
     
