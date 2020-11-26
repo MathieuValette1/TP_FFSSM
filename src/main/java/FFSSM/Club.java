@@ -87,7 +87,7 @@ public class Club {
 
     @Override
     public String toString() {
-        return "Club{" + "président=" + president + ", nom=" + nom + ", adresse=" + adresse + ", telephone=" + telephone + '}';
+        return "Club{" + "président=" + president.nom + ", nom=" + nom + ", adresse=" + adresse + ", telephone=" + telephone + '}';
     }
 
 }

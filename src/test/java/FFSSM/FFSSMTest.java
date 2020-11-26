@@ -23,15 +23,18 @@ public class FFSSMTest {
     
     private final LocalDate delivrance = LocalDate.of(2010, 01, 25);
     private Licence licenceJon;
+    private Licence licenceValide;
+    private Licence licenceInvalide;
     
     private Moniteur albert;
     
     private Club fcPlouf;
-    
+        
     private Site palavas;
     
     private Plongee plongee;
     private final LocalDate datePlongee = LocalDate.of(2020, 01, 25);
+    
     @BeforeEach
     public void Setup() throws Exception{
         jean = new Personne("007", "Dupond", "Jean", "2 rue de l'église", "0656263212", naissance );
@@ -46,8 +49,16 @@ public class FFSSMTest {
         albert = new Moniteur("009", "Camus", "Albert", "2 rue de la paix", "0656263212", naissance, '3', 2);
         
         fcPlouf = new Club(albert, "FcPlouf", "0656263212");
+        fcPlouf.setAdresse("2 rue de la paix");
+        fcPlouf.setNom("FcPlouf");
+        fcPlouf.setPresident(albert);
+        fcPlouf.setTelephone("0656263212");
+        
+        
         
         licenceJon = new Licence(jon, "888", delivrance, fcPlouf);
+        licenceValide = new Licence(jon, "888", datePlongee, fcPlouf);
+        licenceInvalide = new Licence(jon, "888", datePlongee.plusDays(2), fcPlouf);
         
         palavas = new Site("Palavas", "Très joli");
         palavas.setNom("Palavas");
@@ -129,5 +140,82 @@ public class FFSSMTest {
         plongee.ajouteParticipant(jon);
         assertTrue(plongee.estConforme(), "La plongee est conforme");
     }
+    
+    @Test
+    public void testDate(){
+        assertEquals(LocalDate.of(2020, 01, 25), plongee.getDate());
+    }
+    
+    // Test classe Licence
+    
+    @Test
+    public void testLicenceInfo(){
+        assertEquals(jon, licenceJon.getPossesseur(), "Le possesseur n'est pas le bon");
+        assertEquals("888", licenceJon.getNumero(), "Le numéro n'est pas bon");
+        assertEquals(delivrance, licenceJon.getDelivrance(), "La date n'est pas bonne");
+        assertEquals(fcPlouf, licenceJon.getClub(), "Le club n'est pas bon");        
+    }
+    
+    @Test
+    public void testNEstPasValide1(){
+        //Jon n'a pas de licence valide à la date de la plongee
+        assertFalse(licenceJon.estValide(datePlongee));
+    }
+    
+     @Test
+    public void testNEstPasValide2(){
+        
+        assertFalse(licenceInvalide.estValide(datePlongee));
+        
+    }
+    
+    @Test
+    public void testestValide(){
+        assertTrue(licenceValide.estValide(datePlongee));
+    }
+    
+    //Tests classe Club
+    @Test
+    public void testInfoClub(){
+        assertEquals("FcPlouf", fcPlouf.getNom());
+        assertEquals(albert, fcPlouf.getPresident());
+        assertEquals("0656263212", fcPlouf.getTelephone());
+        assertEquals("2 rue de la paix", fcPlouf.getAdresse());
+    }
+    
+    
+    @Test
+    public void testPlongeeNonConforme(){
+        //Jon n'a pas de licence conforme
+        jon.ajouteLicense("888", delivrance, fcPlouf);
+        plongee.ajouteParticipant(jon);
+        fcPlouf.plongees.add(plongee);
+        fcPlouf.organisePlongee(plongee);
+        assertTrue(fcPlouf.plongeesNonConformes().contains(plongee));
+    }
+    
+    @Test
+    public void testPlongeeConforme(){
+        //Jon n'a pas de licence conforme
+        jon.ajouteLicense("000", LocalDate.of(2020, 01, 20), fcPlouf);
+        plongee.ajouteParticipant(jon);
+        fcPlouf.plongees.add(plongee);
+        fcPlouf.organisePlongee(plongee);
+        assertFalse(fcPlouf.plongeesNonConformes().contains(plongee));
+    }
+        
+    @Test
+    public void testOrganisePlongee(){
+        fcPlouf.organisePlongee(plongee);
+        assertTrue(fcPlouf.plongees.contains(plongee), "La plongee n'a pas été ajouté");
+    }
+    
+    @Test
+    public void testClubToString(){
+        assertEquals("Club{président=Camus, nom=FcPlouf, adresse=2 rue de la paix, telephone=0656263212}", fcPlouf.toString(), "La conversion n'est pas faite");
+    }
+    
+    
+    
 }
 
