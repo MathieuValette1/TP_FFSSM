@@ -20,7 +20,7 @@ public class Club {
     
     public Set<Plongee> plongees = new HashSet<>();
     
-    public List<Embauche> embauches;
+    public Set<Embauche> embauches = new HashSet<>();
 
     public Club(Moniteur président, String nom, String telephone) {
         this.president = président;

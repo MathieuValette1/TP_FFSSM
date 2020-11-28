@@ -24,7 +24,7 @@ public class Embauche {
      */
     public void terminer(LocalDate dateFin){ 
       if (this.estTerminee()) {
-          dateFin = LocalDate.now();
+          this.fin = LocalDate.now();
       } 
     }
     

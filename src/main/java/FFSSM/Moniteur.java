@@ -6,11 +6,12 @@ package FFSSM;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.ArrayList;
 
 public class Moniteur extends Plongeur {
 
     public int numeroDiplome;
-    public List<Embauche> emplois ;
+    public List<Embauche> emplois = new ArrayList();
 
     public Moniteur(String numeroINSEE, String nom, String prenom, String adresse, String telephone, LocalDate naissance, int niveau, int numeroDiplome) {
         super(numeroINSEE, nom, prenom, adresse, telephone, naissance, niveau);

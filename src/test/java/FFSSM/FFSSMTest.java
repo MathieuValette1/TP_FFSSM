@@ -35,6 +35,9 @@ public class FFSSMTest {
     private Plongee plongee;
     private final LocalDate datePlongee = LocalDate.of(2020, 01, 25);
     
+    private Embauche embaucheAlbert;
+    private final LocalDate dateEmbauche = LocalDate.of(2020, 01, 01);
+    
     @BeforeEach
     public void Setup() throws Exception{
         jean = new Personne("007", "Dupond", "Jean", "2 rue de l'église", "0656263212", naissance );
@@ -54,8 +57,6 @@ public class FFSSMTest {
         fcPlouf.setPresident(albert);
         fcPlouf.setTelephone("0656263212");
         
-        
-        
         licenceJon = new Licence(jon, "888", delivrance, fcPlouf);
         licenceValide = new Licence(jon, "888", datePlongee, fcPlouf);
         licenceInvalide = new Licence(jon, "888", datePlongee.plusDays(2), fcPlouf);
@@ -65,6 +66,9 @@ public class FFSSMTest {
         palavas.setDetails("Très joli");
         
         plongee = new Plongee(palavas, albert, datePlongee, 20, 60);
+        
+        embaucheAlbert = new Embauche(dateEmbauche, albert, fcPlouf);
+        
         
         
     }
@@ -213,9 +217,39 @@ public class FFSSMTest {
     @Test
     public void testClubToString(){
         assertEquals("Club{président=Camus, nom=FcPlouf, adresse=2 rue de la paix, telephone=0656263212}", fcPlouf.toString(), "La conversion n'est pas faite");
+    }   
+    
+    
+    //Test classe embauche
+    
+    @Test
+    public void testEmabaucheInfo(){
+        assertEquals(albert, embaucheAlbert.getEmploye(), "L'employé n'est pas le bon");
+        assertEquals(fcPlouf, embaucheAlbert.getEmployeur(), "Le club n'est pas le bon");
+        assertEquals(dateEmbauche, embaucheAlbert.getDebut(), "La date de début n'est pas la bonne");
+                    
     }
     
+    @Test
+    public void testEmbaucheTerminé(){
+        assertFalse(embaucheAlbert.estTerminee(), "L'embauche n'est pas terminée"); //L'embauche n'est pas terminée tant qu'on a pas défini de date de fin
+        embaucheAlbert.terminer(datePlongee);
+        assertEquals(null, embaucheAlbert.getFin(), "L'embauche ne peut pas être terminée");
+        embaucheAlbert.setFin(datePlongee);
+        assertEquals(datePlongee, embaucheAlbert.getFin(), "La date de fin n'est pas la bonne");
+        embaucheAlbert.terminer(datePlongee);
+        assertEquals(LocalDate.now(), embaucheAlbert.getFin(), "La date de fin n'est pas la bonne");
+    }
     
+    //Test classe Moniteur
     
+    @Test
+    public void testEmploisEtEmbauche(){
+        
+        albert.nouvelleEmbauche(fcPlouf, datePlongee);
+        assertFalse(fcPlouf.embauches.isEmpty(), "La liste ne peut être vide puisqu'on a ajouté une embauche");
+        assertFalse(albert.emplois().isEmpty(), "La liste ne peut être vide puisqu'on a ajouté une embauche");
+        assertEquals(fcPlouf, albert.employeurActuel().get(), "L'employeur n'est pas le bon");
+    }
 }
 
